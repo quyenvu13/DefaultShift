@@ -13,7 +13,7 @@ Validators classify only that bounded semantic question. Ownership, immutable ba
 - Intelligent Contract: `contracts/DefaultPolarityGuard.py`
 - Exact source SHA256: `1f5207a086131aeb81e1e6f7044e338949e4ba49e42fea04ed8d610d64d58e09`
 
-The Project deployment is intentionally fresh. Runtime Project evidence is added only after executed frontend cases are run against this address.
+The Project deployment has been runtime-verified through the public frontend on StudioNet. The executed flow covered clause creation, a fresh `DEFAULT_PRESERVED` activation, a fresh `DEFAULT_FLIPPED` block, and exact cached-verdict reuse. The Explorer transaction list shows each Project write as `FINALIZED` with GenVM `SUCCESS`, while the frontend re-read matching contract post-state before presenting application-level success.
 
 ## Product flow
 
@@ -32,6 +32,19 @@ The Project deployment is intentionally fresh. Runtime Project evidence is added
 - Malformed/provider/non-convergent execution cannot be promoted into a semantic verdict or state mutation.
 - Only a clause owner can propose rewrites.
 - `FINALIZED` alone is never displayed as application-level success.
+
+## Executed Project runtime
+
+On contract `0xD324ADB41211F1eB2e4889d04cD20BaA5b9c3b3E`, the public frontend executed:
+
+- Clause #1 creation from the owner wallet.
+- Attempt #1: `DEFAULT_PRESERVED` → activated v2; versions 2, attempts 1, fresh semantic evals 1/8, flip blocks 0. Explorer identifier: `0x01cc8235…16e152ef`.
+- Attempt #2: `DEFAULT_FLIPPED` → blocked; active remained v2; attempts 2, fresh semantic evals 2/8, flip blocks 1. Explorer identifier: `0xa8476d5a…204dc5e1`.
+- Attempt #3: exact `DEFAULT_FLIPPED` rewrite reuse → cache hit; active remained v2; attempts 3, fresh semantic evals stayed 2/8, flip blocks 2. Explorer identifier: `0x5b84b44a…9f05619d`.
+
+The StudioNet Explorer contract page showed all three `propose_rewrite` transactions as `FINALIZED`, GenVM `SUCCESS`, consensus `Accepted`. Runtime evidence is therefore not inferred from `FINALIZED` alone: each semantic consequence is matched to the frontend's accepted-state re-read and attempt history.
+
+Website: `https://default-shift.vercel.app`
 
 ## Commands
 

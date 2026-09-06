@@ -69,7 +69,7 @@ function renderOverview() {
       </div>
     </div>
     <div class="metrics">
-      <article><span>Live contract</span><strong>${shortAddress(CONTRACT_ADDRESS, 9, 7)}</strong><small>fresh Project deployment</small></article>
+      <article><span>Live contract</span><strong>${shortAddress(CONTRACT_ADDRESS, 9, 7)}</strong><small>runtime-verified Project deployment</small></article>
       <article><span>Clauses</span><strong id="metricClauses">—</strong><small>on-chain</small></article>
       <article><span>Semantic budget</span><strong>8</strong><small>fresh evaluations / clause</small></article>
       <article><span>Baseline</span><strong>v1</strong><small>always compared</small></article>
@@ -136,7 +136,7 @@ function renderVerification() {
     <div class="verification-grid">
       <article class="verify-card"><span>Contract address</span><code>${CONTRACT_ADDRESS}</code><a href="${CONTRACT_EXPLORER_URL}" target="_blank" rel="noreferrer">Open Explorer ↗</a></article>
       <article class="verify-card"><span>Exact source SHA256</span><code>${CONTRACT_SHA256}</code><small>contracts/DefaultPolarityGuard.py</small></article>
-      <article class="verify-card"><span>Runtime status</span><strong>Project deployment ready for smoke test</strong><small>Fresh address; executed Project cases are recorded only after they actually run.</small></article>
+      <article class="verify-card"><span>Runtime status</span><strong>Runtime verified on StudioNet</strong><small>Executed via frontend: DEFAULT_PRESERVED activation, DEFAULT_FLIPPED blocking, and exact cache reuse; Explorer shows FINALIZED + GenVM SUCCESS for each write.</small></article>
     </div>
     <div class="truth-banner"><strong>FINALIZED ≠ success by itself.</strong><span>Writes are treated as successful only after GenVM execution evidence and matching accepted-state postconditions.</span></div>`
 }
