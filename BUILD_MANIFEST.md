@@ -18,8 +18,9 @@
 - `npm run build`: PASS
 - Local static serving: PASS
 - Public hygiene scan: PASS
+- Vercel publish configuration: PASS (`npm run build` → `dist`)
 
-The generated `dist/` directory was deleted after the successful production build and is not part of the public package.
+The generated `dist/` directory was deleted after the successful production build and is not part of the public package. Vercel is explicitly configured to run `npm run build` and publish `dist`; the app uses hash routing, so no catch-all rewrite is required.
 
 ## Runtime state
 

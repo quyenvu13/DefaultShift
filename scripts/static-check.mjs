@@ -2,6 +2,9 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 const root=resolve(new URL('..',import.meta.url).pathname)
 const app=readFileSync(join(root,'src/app.js'),'utf8'); const gl=readFileSync(join(root,'src/genlayer.js'),'utf8')
+const vercel=JSON.parse(readFileSync(join(root,'vercel.json'),'utf8'))
+if(vercel.buildCommand!=='npm run build'||vercel.outputDirectory!=='dist') throw new Error('Vercel must run the production build and publish dist')
+if(Array.isArray(vercel.rewrites)&&vercel.rewrites.length) throw new Error('Hash routing does not require a catch-all Vercel rewrite')
 const must=["CONTRACT_ADDRESS = '0xD324ADB41211F1eB2e4889d04cD20BaA5b9c3b3E'","functionName: 'create_clause'","functionName: 'propose_rewrite'","functionName: 'get_clause'","functionName: 'get_attempts'","TransactionStatus.FINALIZED","executionOutcome(receipt)"]
 for(const token of must) if(!(app+gl).includes(token)) throw new Error(`Missing required integration token: ${token}`)
 if(/value:\s*Number\(/.test(gl)) throw new Error('Native value must not use Number conversion')
