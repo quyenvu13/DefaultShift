@@ -1,0 +1,2 @@
+import test from 'node:test'; import assert from 'node:assert/strict'; import { createHash } from 'node:crypto'; import { readFileSync } from 'node:fs'
+test('contract source SHA is frozen R3',()=>{const b=readFileSync(new URL('../contracts/DefaultPolarityGuard.py',import.meta.url));assert.equal(createHash('sha256').update(b).digest('hex'),'1f5207a086131aeb81e1e6f7044e338949e4ba49e42fea04ed8d610d64d58e09')})

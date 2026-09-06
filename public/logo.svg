@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="DefaultShift logo">
+  <rect width="512" height="512" rx="112" fill="#1d2f5f"/>
+  <path d="M104 160h210l-44-44 36-36 108 108-108 108-36-36 44-44H104z" fill="#f0a23a"/>
+  <path d="M408 352H198l44 44-36 36-108-108 108-108 36 36-44 44h210z" fill="#f7f4ed" opacity=".96"/>
+</svg>
