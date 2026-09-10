@@ -1,7 +1,7 @@
 e7101ce0b0bc7bf179ecf201fc828f1ebc8efedde5cf1159ffd48aa29e1234f7  ./.gitignore
 7d0f31f04bf2185824adfbdbf7a84f97315aa3034a80ba9d607eda1f1ef0956e  ./BUILD_MANIFEST.md
 38ac8c1a6a918802175d4761b37ea626cebb8917859af53fffbaf8c42babc0a7  ./README.md
-ae49d4845d4b9c4402415092d9a0a36336a39229ff6dab6387d85964b02e5268  ./TESTING.md
+25d870fb823ae679683494d12686ceba79180e40e57aa8e523b5f8ffac6d1c2d  ./TESTING.md
 96ae04f9acf77bee18c16eb7e592fbdbd0d884be6f9997351b45ce71f2932cfe  ./api/health.js
 1f5207a086131aeb81e1e6f7044e338949e4ba49e42fea04ed8d610d64d58e09  ./contracts/DefaultPolarityGuard.py
 16f35cdc7e120a639c3da860f50390f01ac613c12487c85997f6fd1f9d2179fc  ./docs/evidence/01-create-clause-success.png
