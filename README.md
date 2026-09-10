@@ -37,6 +37,15 @@ and `studionet.isStudio` is true, so the SDK does not verify the wallet's networ
 before sending. Without the switch, a wallet left on another chain would be asked
 to sign against it.
 
+## Runtime evidence
+
+[`TESTING.md`](./TESTING.md) records a post-fix run with screenshots: clause
+creation, a `DEFAULT_PRESERVED` rewrite that appends and activates, a
+`DEFAULT_FLIPPED` rewrite that is blocked with the active version untouched, and
+an exact resubmission that resolves from cache without spending a fresh semantic
+evaluation. Contract behaviour is separately executed on real GenVM by
+[`tests/direct/`](./tests/direct/).
+
 ## Product flow
 
 1. Connect a StudioNet wallet.

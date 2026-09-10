@@ -71,7 +71,119 @@ text is kept exact.
 The model answer in these tests comes from `mock_llm`; the suite never invents a
 consensus outcome, it states one and checks what the contract does with it.
 
-## Executed StudioNet Project runtime
+## Post-fix StudioNet run — clause #2
+
+Executed on 2026-09-10 through the deployed frontend, after the wallet-connection
+fix described in the README. Owner wallet `0x923a09d…7cC0bDF`. Contract and
+address unchanged.
+
+This run exists because a reviewer reported `Create clause failed / method
+[wallet_getSnaps] doesn't has corresponding handler`. Every write in the app went
+through the same code path, so the failure was not specific to clause creation.
+Both write methods are exercised below.
+
+### 1. `create_clause` — the action that was reported failing
+
+![Clause created, FINALIZED FINISHED_WITH_RETURN](docs/evidence/01-create-clause-success.png)
+
+```text
+Clause created
+FINALIZED · FINISHED_WITH_RETURN · accepted state re-read as clause #2
+0xa7dfa6d4308f9ed5801285ad3ee92fe9af45b189ce79b9e6f1aad070e1d7f1ee
+```
+
+The wallet was asked only to switch network and sign. No Snap install prompt
+appears, because `wallet_getSnaps` is no longer called at all.
+
+### 2. `propose_rewrite` — `DEFAULT_PRESERVED`, appended and activated
+
+Rewrite: *"Trial access stops on day 30. To continue service after that date, the
+customer must submit a renewal request."*
+
+![DEFAULT_PRESERVED activated version 2](docs/evidence/02-default-preserved-activated.png)
+
+| | |
+|---|---|
+| Verdict | `DEFAULT_PRESERVED`, fresh semantic eval |
+| Consequence | activated version 2 |
+| Versions / Attempts | 2 / 1 |
+| Fresh semantic evals | **1 / 8** |
+| Flip blocks | 0 |
+
+The second write method works too, which is what confirms the fix was not
+partial.
+
+### 3. `propose_rewrite` — `DEFAULT_FLIPPED`, blocked
+
+Rewrite: *"After day 30, the trial automatically converts to a paid subscription
+unless the customer sends a cancellation request."*
+
+![DEFAULT_FLIPPED blocked, active version unchanged](docs/evidence/03-default-flipped-blocked.png)
+
+```text
+Rewrite finalized
+DEFAULT_FLIPPED · fresh semantic eval · blocked; active version unchanged
+0xd92ef42b9ec7838f116f4d9fc8ff1cd37d076e685b0ad401a67511abbb2a4b58
+```
+
+| | |
+|---|---|
+| Versions | **2 — unchanged** |
+| Active | **v2 — unchanged** |
+| Attempts | 2 |
+| Fresh semantic evals | 2 / 8 |
+| Flip blocks | **1** |
+
+Both rewrites describe the same 30-day trial and both are plausible contract
+prose. The only difference is what happens when nobody acts: under the baseline
+and under rewrite 2, service stops; under rewrite 3, it silently becomes paid.
+That single reversal is the whole question this contract asks, and it is the
+difference between an activated version and a blocked one.
+
+### 4. `propose_rewrite` — exact resubmission, cache hit
+
+The rewrite from step 3, submitted again unchanged.
+
+![Cache hit, fresh semantic evals unchanged](docs/evidence/04-cache-hit-no-fresh-eval.png)
+
+```text
+Rewrite finalized
+DEFAULT_FLIPPED · cache hit · blocked; active version unchanged
+0x7de3f1c56cc3bd264cceb3f58212b213782b716c693fc396d7ab41a627cee4b8
+```
+
+| | |
+|---|---|
+| Attempts | 3 |
+| Flip blocks | 2 |
+| Fresh semantic evals | **still 2 / 8** |
+
+Attempts and blocks both advance; the semantic budget does not. Resubmitting an
+already-classified candidate buys no second consensus round, so paraphrase-free
+repetition costs the proposer an attempt and costs the network nothing.
+
+### 5. Explorer — execution evidence, not just finalization
+
+![Explorer: propose_rewrite, Accepted, SUCCESS, Return, Finalized](docs/evidence/05-explorer-finalized-success.png)
+
+```text
+Method            propose_rewrite
+Parameters        2 · "After day 30, the trial automatically converts to a paid
+                     subscription unless the customer sends a cancellation request."
+Consensus Result  Accepted
+Execution Result  SUCCESS
+Result Code       Return
+Lifecycle         Pending → Proposing → Committing → Revealing → Accepted → Finalized
+```
+
+The frontend does not treat `FINALIZED` as success on its own: it reads the
+execution result and then re-reads accepted contract state before presenting the
+outcome, which is why step 4's panel and this page agree.
+
+## Earlier StudioNet run — clause #1
+
+Recorded before the wallet-connection fix. The contract was not changed, so these
+results remain valid; they are kept as the original record.
 
 All cases below were executed through the deployed DefaultShift frontend against the Project address above. Application-level success was accepted only after transaction finalization, GenVM execution evidence, and matching accepted-state reads.
 
