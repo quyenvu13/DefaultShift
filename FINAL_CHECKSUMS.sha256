@@ -1,9 +1,14 @@
 e7101ce0b0bc7bf179ecf201fc828f1ebc8efedde5cf1159ffd48aa29e1234f7  ./.gitignore
 7d0f31f04bf2185824adfbdbf7a84f97315aa3034a80ba9d607eda1f1ef0956e  ./BUILD_MANIFEST.md
-babf56a478f5a00df4e47c776e516c69d638833b12bea8723ca2aa75ad8cb7ae  ./README.md
-1e098fe6ae4c28871e74fc32fbde10ac0f52a0b1a5fb5ff59e9a3c7e18163d35  ./TESTING.md
+38ac8c1a6a918802175d4761b37ea626cebb8917859af53fffbaf8c42babc0a7  ./README.md
+ae49d4845d4b9c4402415092d9a0a36336a39229ff6dab6387d85964b02e5268  ./TESTING.md
 96ae04f9acf77bee18c16eb7e592fbdbd0d884be6f9997351b45ce71f2932cfe  ./api/health.js
 1f5207a086131aeb81e1e6f7044e338949e4ba49e42fea04ed8d610d64d58e09  ./contracts/DefaultPolarityGuard.py
+16f35cdc7e120a639c3da860f50390f01ac613c12487c85997f6fd1f9d2179fc  ./docs/evidence/01-create-clause-success.png
+ddcbc21dd2bf790fc2ab515a3acb55543c65c880220bbb7c499acd74f2ba1a77  ./docs/evidence/02-default-preserved-activated.png
+ae4845ac4900c838ff68c80f9a7733710073e20de9bdf818d60604477364bb7d  ./docs/evidence/03-default-flipped-blocked.png
+a9c2c787a86ea60ea972035563b17302270f021acb93cb47247649f5ee8f6c68  ./docs/evidence/04-cache-hit-no-fresh-eval.png
+591a4a49a9f882854cd04b9cffd9cdb1283427d52c174e2273e2ff3ff883ca93  ./docs/evidence/05-explorer-finalized-success.png
 2b2d453da950aa5d57d5435810365dbee4e8c807c4cdb464ac265c0ef883a22f  ./index.html
 1418d95258857ce7ec18a627cdefd7234e795b4c86d021bcdf21f87ce2e72d8f  ./package-lock.json
 1cbca3bcc742aa5e424f2f5d3f2353efcd46966a846cf0a3393627bbbdcc4deb  ./package.json
