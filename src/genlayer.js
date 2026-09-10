@@ -14,9 +14,84 @@ export function makeWriteClient(account) {
   return createClient({ chain: studionet, account, provider: window.ethereum })
 }
 
+export const CHAIN_ID = 61999
+const CHAIN_ID_HEX = `0x${CHAIN_ID.toString(16)}`
+const WALLET_RPC = 'https://studio.genlayer.com/api'
+
+function errorCode(error) {
+  const code = error?.code ?? error?.cause?.code
+  return typeof code === 'number' ? code : Number(code)
+}
+
+async function switchChain() {
+  await window.ethereum.request({
+    method: 'wallet_switchEthereumChain',
+    params: [{ chainId: CHAIN_ID_HEX }],
+  })
+}
+
+async function addChain() {
+  await window.ethereum.request({
+    method: 'wallet_addEthereumChain',
+    params: [{
+      chainId: CHAIN_ID_HEX,
+      chainName: studionet.name || 'GenLayer Studio Network',
+      // The wallet fetches this itself, so it must be an absolute URL.
+      rpcUrls: [WALLET_RPC],
+      nativeCurrency: studionet.nativeCurrency ?? { name: 'GEN Token', symbol: 'GEN', decimals: 18 },
+      blockExplorerUrls: [EXPLORER_BASE],
+    }],
+  })
+}
+
+/**
+ * Put the wallet on StudioNet without touching MetaMask Snaps.
+ *
+ * This deliberately does NOT call `client.connect('studionet')`. That SDK helper
+ * does two unrelated things: it switches the network, and it installs the
+ * GenLayer MetaMask Snap. Reading genlayer-js 1.1.8 makes the second explicit —
+ * it calls `wallet_getSnaps`, then `wallet_requestSnaps` when the Snap is absent.
+ * A wallet that does not implement the Snaps API answers `wallet_getSnaps` with
+ * "method [wallet_getSnaps] doesn't has corresponding handler", and every write
+ * in this app fails before a transaction is ever built. That is the exact error a
+ * reviewer reported on Create clause.
+ *
+ * Signing never needs that Snap: writes go out through `eth_sendTransaction` on
+ * the injected provider. So only the network half is kept.
+ *
+ * The switch also has to happen here rather than being left to the SDK.
+ * `assertChainMatch` in the same file opens with `if (chainConfig.isStudio) return;`
+ * and `studionet.isStudio` is true, so the SDK does not verify the wallet's
+ * network before sending. Without this, a wallet left on another chain would be
+ * asked to sign against it.
+ */
 export async function ensureStudioNet(account) {
   const client = makeWriteClient(account)
-  await client.connect('studionet')
+
+  const current = await window.ethereum.request({ method: 'eth_chainId' })
+  if (typeof current === 'string' && current.toLowerCase() === CHAIN_ID_HEX) return client
+
+  try {
+    await switchChain()
+    return client
+  } catch (error) {
+    if (errorCode(error) === 4001) {
+      throw new Error('Network switch was rejected. Switch your wallet to GenLayer Studio Network to continue.')
+    }
+    if (errorCode(error) !== 4902) throw error
+  }
+
+  // 4902: the network is unknown to this wallet. Add it, then switch.
+  try {
+    await addChain()
+    await switchChain()
+  } catch (error) {
+    if (errorCode(error) === 4001) {
+      throw new Error(`Adding GenLayer Studio Network was rejected. Add chain ${CHAIN_ID} in your wallet to continue.`)
+    }
+    throw error
+  }
+
   return client
 }
 

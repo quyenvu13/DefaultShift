@@ -15,6 +15,28 @@ Validators classify only that bounded semantic question. Ownership, immutable ba
 
 The Project deployment has been runtime-verified through the public frontend on StudioNet. The executed flow covered clause creation, a fresh `DEFAULT_PRESERVED` activation, a fresh `DEFAULT_FLIPPED` block, and exact cached-verdict reuse. The Explorer transaction list shows each Project write as `FINALIZED` with GenVM `SUCCESS`, while the frontend re-read matching contract post-state before presenting application-level success.
 
+## Wallet connection
+
+Writes go out through `eth_sendTransaction` on the injected provider. The app puts
+the wallet on StudioNet with `wallet_switchEthereumChain`, falling back to
+`wallet_addEthereumChain` when the network is unknown to that wallet, and nothing
+else.
+
+It deliberately does **not** call `client.connect('studionet')`. That genlayer-js
+helper does two unrelated things — it switches the network, and it installs the
+GenLayer MetaMask Snap. In 1.1.8 the second is explicit: `wallet_getSnaps`, then
+`wallet_requestSnaps` when the Snap is absent. A wallet that does not implement
+the Snaps API answers the first call with
+`method [wallet_getSnaps] doesn't has corresponding handler`, and every write in
+the app fails before a transaction is built. Signing never needs that Snap, so
+only the network half is kept and any StudioNet wallet can use the app.
+
+The explicit switch is also a correctness fix, not only a compatibility one:
+`assertChainMatch` in the same SDK opens with `if (chainConfig.isStudio) return;`
+and `studionet.isStudio` is true, so the SDK does not verify the wallet's network
+before sending. Without the switch, a wallet left on another chain would be asked
+to sign against it.
+
 ## Product flow
 
 1. Connect a StudioNet wallet.
