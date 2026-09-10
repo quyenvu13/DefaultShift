@@ -102,6 +102,12 @@ customer must submit a renewal request."*
 
 ![DEFAULT_PRESERVED activated version 2](docs/evidence/02-default-preserved-activated.png)
 
+```text
+Rewrite finalized
+DEFAULT_PRESERVED · fresh semantic eval · activated version 2
+0x25416672c0a790e4008ce9de8e485837a1ed881c2343da6346263e5d85daf1cb
+```
+
 | | |
 |---|---|
 | Verdict | `DEFAULT_PRESERVED`, fresh semantic eval |
@@ -184,6 +190,10 @@ outcome, which is why step 4's panel and this page agree.
 
 Recorded before the wallet-connection fix. The contract was not changed, so these
 results remain valid; they are kept as the original record.
+
+The identifiers in this section were noted in truncated form at the time and are
+left as recorded rather than reconstructed. The post-fix run above carries full
+transaction hashes for every write; use that section to verify on the explorer.
 
 All cases below were executed through the deployed DefaultShift frontend against the Project address above. Application-level success was accepted only after transaction finalization, GenVM execution evidence, and matching accepted-state reads.
 
