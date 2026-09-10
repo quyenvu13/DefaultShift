@@ -25,7 +25,51 @@ npm test
 npm run build
 ```
 
-The package verifies exact contract source parity and frontend/contract integration invariants. The frozen Intelligent Contract had already passed its dedicated compile, regression, mutation, immutable-baseline, exact-cache-reuse, cross-clause-isolation, restoration, and owner-boundary tests before this Project build.
+`npm run check`, `npm test` and `npm run verify:source` verify exact contract
+source parity and frontend/contract integration invariants. They are **static**:
+they hash the contract and match strings in the source. They do not execute the
+contract, and nothing in this section should be read as behavioural proof.
+
+## Contract behaviour, executed on real GenVM
+
+```bash
+pip install "genlayer-test==0.29.2" "pytest>=8,<9"
+python -m pytest tests/direct/ -q
+```
+
+```text
+15 passed
+```
+
+`genlayer-test` Direct Mode runs `contracts/DefaultPolarityGuard.py` inside a
+real GenVM build. Nothing is stubbed and no contract logic is re-implemented, so
+the suite cannot drift from the deployed source. `tests/direct/conftest.py` pins
+the GenVM version, so a clean machine executes the same runtime instead of
+resolving "latest".
+
+`test_clause_lifecycle.py` executes the same sequence recorded under
+**Executed StudioNet Project runtime** below — creation, a fresh
+`DEFAULT_PRESERVED` activation, a fresh `DEFAULT_FLIPPED` block, and exact cached
+reuse — and asserts the same counters the live run produced. It also proves the
+two properties the design rests on: every candidate is compared to the immutable
+version-1 baseline even after the active version has moved on, and a verdict
+cached for one clause is never reused for another clause that happens to share
+the same baseline text.
+
+`test_guards.py` covers what the contract refuses. Six malformed consensus
+outputs — unknown verdict, extra key, wrong type, wrong key, non-JSON, non-object
+— each revert with no attempt written, no budget spent and no version added. A
+rewrite byte-identical to the active text is refused, including one that differs
+only by surrounding whitespace. The eight-evaluation budget is exercised to
+exhaustion: a ninth fresh candidate is refused and writes nothing, while a
+previously cached candidate still resolves, so the clause is bounded rather than
+frozen. Restoration to the version-1 baseline resolves from the seeded cache and
+spends no budget. Finally, clause text carrying a forged fence tag and an
+embedded verdict token cannot reach the model as instructions, and the stored
+text is kept exact.
+
+The model answer in these tests comes from `mock_llm`; the suite never invents a
+consensus outcome, it states one and checks what the contract does with it.
 
 ## Executed StudioNet Project runtime
 

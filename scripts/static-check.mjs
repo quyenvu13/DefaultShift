@@ -20,5 +20,11 @@ const forbidden=[
   ['generated','-by-','ai'].join(''),
 ].map(s=>new RegExp(s,'i'))
 function walk(dir){return readdirSync(dir).flatMap(n=>{const p=join(dir,n);const s=statSync(p);return s.isDirectory()?walk(p):[p]})}
-for(const file of walk(root).filter(p=>!p.includes('/dist/')&&!p.includes('/node_modules/')&&!p.endsWith('.png'))){const text=readFileSync(file,'utf8');for(const rx of forbidden)if(rx.test(text))throw new Error(`Public hygiene failure ${rx} in ${file}`)}
+const IGNORED=['/dist/','/node_modules/','/__pycache__/','/.pytest_cache/','/artifacts/','/.git/']
+// The walk is not gitignore-aware, so untracked build output has to be skipped
+// explicitly. Python bytecode is the case that matters: a .pyc embeds the
+// absolute source path, so running the Direct Mode suite leaves a file whose
+// contents can trip a hygiene rule on the developer's own home directory name.
+// Everything skipped here is already in .gitignore and can never be committed.
+for(const file of walk(root).filter(p=>!IGNORED.some(d=>p.includes(d))&&!p.endsWith('.png')&&!p.endsWith('.pyc'))){const text=readFileSync(file,'utf8');for(const rx of forbidden)if(rx.test(text))throw new Error(`Public hygiene failure ${rx} in ${file}`)}
 console.log('STATIC CHECK PASS')

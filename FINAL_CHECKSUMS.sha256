@@ -1,7 +1,7 @@
 e7101ce0b0bc7bf179ecf201fc828f1ebc8efedde5cf1159ffd48aa29e1234f7  ./.gitignore
 7d0f31f04bf2185824adfbdbf7a84f97315aa3034a80ba9d607eda1f1ef0956e  ./BUILD_MANIFEST.md
 babf56a478f5a00df4e47c776e516c69d638833b12bea8723ca2aa75ad8cb7ae  ./README.md
-79751d8d956a3f1b01f905bc6de2dc0c7b8a3984d2289ec346382100a4dc1c1f  ./TESTING.md
+1e098fe6ae4c28871e74fc32fbde10ac0f52a0b1a5fb5ff59e9a3c7e18163d35  ./TESTING.md
 96ae04f9acf77bee18c16eb7e592fbdbd0d884be6f9997351b45ce71f2932cfe  ./api/health.js
 1f5207a086131aeb81e1e6f7044e338949e4ba49e42fea04ed8d610d64d58e09  ./contracts/DefaultPolarityGuard.py
 2b2d453da950aa5d57d5435810365dbee4e8c807c4cdb464ac265c0ef883a22f  ./index.html
@@ -15,11 +15,14 @@ f089c334eb24578b25c1e39088edb65d92863141066c2f8a1f2d1788212c1d5d  ./public/manif
 890ce60bf7a480cbb18d4f3a7dbab52db38eb83d2bf19aba7b851a5d057d428b  ./public/og-image.png
 265fcdcbebd72c43611ef34f95d9b0acb62e13b92aedf106acbedeba976a00a8  ./scripts/build.mjs
 d4c65a8a7f57b53e29c32d0116a2915c26d16b97412f70274be373941c45c033  ./scripts/dev.mjs
-8197c858bd4aa20fe8bdf1e0a8abc4de994d7a1bf744c321ed3a86dd9943434f  ./scripts/static-check.mjs
+62b9225968fe0a25a1908989f95ea5e4b4c71ebe65e2c1faec17e7ab3d33bd8a  ./scripts/static-check.mjs
 3e38055dc46caac0801fda5145a85baef7edd03cd9bc198a36beda36e48160d6  ./scripts/verify-source.mjs
 fa339c3374e6374ac9b372d012043e9c696fe3052e11fa43e59042e982e65328  ./src/app.js
 5892f84cad79e3667f5281dd8be7565b9f3862c582d3d05e14925482e87eaa27  ./src/genlayer.js
 594aa9c923f1cf5b17aa312ca54505ffd4ca4b61cc42897795bfb759b292e4a7  ./src/styles.css
+d17663a131802c99dda1efe8be47fb5eb6d7b7924fa5fde3b89e119fce1b81b2  ./tests/direct/conftest.py
+4d7bebb44ce7aca6df9a3da59af396861cb06d3920128bb01b312f60fcf88e69  ./tests/direct/test_clause_lifecycle.py
+da60c59ab3956c153ef449298c30ca47970453c6c6b9a84f22939d333e13ad7e  ./tests/direct/test_guards.py
 676d65de50657209ac05c325e21ade9baecf6c79b8f07c30a7924b470fc44b08  ./tests/integration-contract.test.mjs
 73cf13c54516dcca44fd650c5505b54d1bb26d6fe1d7b5cfc4b0376f30a3d5c1  ./tests/source-parity.test.mjs
 da8bc0179cf343dc70b9a60f0cce02bb052917b9a9271ffcecdebd11ef5d939f  ./tests/test_contract_regressions.py
